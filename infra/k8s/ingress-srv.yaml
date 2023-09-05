@@ -17,3 +17,31 @@ spec:
             name: auth-srv
             port:
               number: 4000
+      - path: /expiration
+        pathType: Prefix
+        backend:
+          service:
+            name: expiration-srv
+            port:
+              number: 4001
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service:
+            name: orders-srv
+            port:
+              number: 4002
+      - path: /payment
+        pathType: Prefix
+        backend:
+          service:
+            name: payment-srv
+            port:
+              number: 4003
+      - path: /tickets
+        pathType: Prefix
+        backend:
+          service:
+            name: tickets-srv
+            port:
+              number: 4004
