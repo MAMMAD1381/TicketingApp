@@ -10,7 +10,7 @@ spec:
   - host: ticket-app.dev
     http:
       paths:
-      - path: /auth
+      - path: /api/users/auth
         pathType: Prefix
         backend:
           service:

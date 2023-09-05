@@ -1,9 +1,12 @@
-import  Express  from "express";
-import { json } from "body-parser";
+const express = require('express')
+const {json} = require('body-parser')
 const port = 4002
+const router = require('./router')
 
-const app = Express()
+const app = express()
 app.use(json())
+
+
 app.route('/orders').get((req, res)=>{
   res.status(200).send("<h1>welcome to orders service</h1>")
 })

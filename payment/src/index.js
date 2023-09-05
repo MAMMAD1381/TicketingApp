@@ -1,10 +1,12 @@
-import  Express  from "express";
-import { json } from "body-parser";
+const express = require('express')
+const {json} = require('body-parser')
 const port = 4003
+const router = require('./router')
 
-const app = Express()
+const app = express()
 app.use(json())
-app.route('/auth').get((req, res)=>{
+
+app.route('/payment').get((req, res)=>{
   res.status(200).send("<h1>welcome to payment service</h1>")
 })
 
