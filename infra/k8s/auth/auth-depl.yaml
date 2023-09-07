@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders-depl
+  name: auth-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: auth
   template:
     metadata:
       labels:
-        app: orders
+        app: auth
     spec:
       containers:
-      - name: orders
-        image: mammad1381/orders
+      - name: auth
+        image: mammad1381/auth
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-srv
+  name: auth-srv
 spec:
   selector:
-    app: orders
+    app: auth
   ports: 
-    - name: orders
+    - name: auth
       protocol: TCP
-      port: 4002
-      targetPort: 4002
+      port: 4000
+      targetPort: 4000
