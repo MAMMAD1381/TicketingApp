@@ -1,7 +1,7 @@
 abstract class AbstractError extends Error{
   abstract statusCode: number
-  constructor(){
-    super()
+  constructor(message:string){
+    super(message)
 
     
   }

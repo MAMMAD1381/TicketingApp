@@ -4,7 +4,7 @@ class DatabaseConnectionError extends AbstractError {
     statusCode
     reason
     constructor(reason = 'database connection error', statusCode = 500) {
-      super()
+      super('database connection error')
       this.reason = reason
       this.statusCode = statusCode
     }

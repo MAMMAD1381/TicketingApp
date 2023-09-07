@@ -7,8 +7,8 @@ import { Request, Response, NextFunction } from "express"
 
 export function signUp(req: Request, res: Response, next: NextFunction){
   const errors = validationResult(req)
-  if(!errors.isEmpty()) throw new RequestValidationError(errors.array());
-  throw new BasicError()
+  if(!errors.isEmpty()) next(new RequestValidationError(errors.array()));
+  next(new BasicError())
   res.status(201).send({success: true})
 }
 

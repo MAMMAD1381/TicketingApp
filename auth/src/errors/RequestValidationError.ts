@@ -1,12 +1,11 @@
 import { ValidationError } from "express-validator"
-import {FieldValidationError} from 'express-validator'
 import AbstractError from './AbstractError'
 
 class RequestValidationError extends AbstractError {
   errors
   statusCode
   constructor(errors: ValidationError[], statusCode = 400) {
-    super()
+    super('request validation error')
     this.errors = errors
     this.statusCode = statusCode
   }
