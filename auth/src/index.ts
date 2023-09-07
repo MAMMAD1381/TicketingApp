@@ -1,8 +1,9 @@
-const express = require('express')
-const {json} = require('body-parser')
+import express  from "express"
+import { json } from "body-parser"
+import router from './router'
+import errorHandler from './middlewares/erorrHandler'
+
 const port = 4000
-const router = require('./router')
-const errorHandler = require('./middlewares/erorrHandler')
 
 const app = express()
 app.use(json())
