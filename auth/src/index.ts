@@ -3,6 +3,7 @@ import { json } from "body-parser"
 import router from './router'
 import errorHandler from './middlewares/erorrHandler'
 import RouteNotFoundError from './errors/RouteNotFoundError'
+import connectDB from "./utilities/connectDB"
 
 const port = 4000
 
@@ -21,7 +22,15 @@ app.route('*').all((req, res, next) => {
 
 app.use(errorHandler)
 
+databaseConfigurations()
 
 app.listen(port, () => {
   console.log(`auth service is listening on ports ${port}`)
 })
+
+function databaseConfigurations(){
+  connectDB()
+
+
+
+}

@@ -3,26 +3,48 @@ import BasicError from './errors/BasicError'
 import DatabaseConnectionError from './errors/DatabaseConnectionError'
 import RequestValidationError  from './errors/RequestValidationError'
 import { Request, Response, NextFunction } from "express"
-import connectDB from "./utilities/connectDB"
+import User from "./models/User"
 
 
-export function signUp(req: Request, res: Response, next: NextFunction){
+//? sing up
+export async function signUp(req: Request, res: Response, next: NextFunction){
+  const {email, password} = req.body
+
+  //? validating body parameters
   const errors = validationResult(req)
   if(!errors.isEmpty()) return next(new RequestValidationError(errors.array()));
-  connectDB()
-  res.status(201).send({success: true})
+
+  //? checking existing user
+  const duplicateUser = await User.findOne({email})
+  if (duplicateUser) return next(new BasicError(`user with this ${email} email already exists`, 400))
+
+  const user = await User.create({email: req.body.email, password: req.body.password})
+  res.status(201).send({success: true, user})
 }
 
-export function signIn(req: Request, res: Response, next: NextFunction){
+//? sign in
+export async function signIn(req: Request, res: Response, next: NextFunction){
+  const {email, password} = req.body
 
-  res.status(201).send({success: true})
+  //? validating body parameters
+  const errors = validationResult(req)
+  if(!errors.isEmpty()) return next(new RequestValidationError(errors.array()));
+
+  //? checking for existence of user
+  const user = await User.findOne({email, password})
+  if (!user) return next(new BasicError(`user with this ${email} email doesn't exists`, 404))
+
+  console.log(user)
+  res.status(201).send({success: true, user})
 }
 
+//? sing out
 export function signOut(req: Request, res: Response, next: NextFunction){
 
   res.status(201).send({success: true})
 }
 
+//? me
 export function getMe(req: Request, res: Response, next: NextFunction){
 
   res.status(201).send({success: true})
