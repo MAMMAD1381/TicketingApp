@@ -4,11 +4,17 @@ import router from './router'
 import errorHandler from './middlewares/erorrHandler'
 import RouteNotFoundError from './errors/RouteNotFoundError'
 import connectDB from "./utilities/connectDB"
+import cookieSession from "cookie-session"
 
 const port = 4000
 
 const app = express()
 app.use(json())
+app.set('trust proxy', true)
+app.use(cookieSession({
+  signed: false,
+  secure: true
+}))
 
 app.use('/api/users/auth', router)
 

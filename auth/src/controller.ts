@@ -4,6 +4,7 @@ import DatabaseConnectionError from './errors/DatabaseConnectionError'
 import RequestValidationError  from './errors/RequestValidationError'
 import { Request, Response, NextFunction } from "express"
 import User from "./models/User"
+import jwt from 'jsonwebtoken'
 
 
 //? sing up
@@ -19,7 +20,15 @@ export async function signUp(req: Request, res: Response, next: NextFunction){
   if (duplicateUser) return next(new BasicError(`user with this ${email} email already exists`, 400))
 
   const user = await User.create({email: req.body.email, password: req.body.password})
-  res.status(201).send({success: true, user})
+
+  const jwtToken = user.getJwt()
+
+  req.session ={
+    jwtToken
+  } 
+
+  console.log(jwtToken)
+  res.status(201).send({success: true, user, jwtToken})
 }
 
 //? sign in

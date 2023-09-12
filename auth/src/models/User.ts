@@ -1,7 +1,24 @@
+import { Model, Schema, model } from 'mongoose'
 import mongoose from 'mongoose'
-import Password from '../utilities/password';
+import Password from '../utilities/password'
+import jwt from 'jsonwebtoken'
 
-const UserSchema = new mongoose.Schema({
+interface IUser {
+  email: string
+  password: string
+}
+
+//? user schema methods
+interface IUserMethods {
+  getJwt(): string
+}
+
+//? user schema statics
+interface UserModel extends Model<IUser, {}, IUserMethods> {
+  // myStaticMethod(): number;
+}
+
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   email: {
     type: String,
     required: [true, 'pls add an email'],
@@ -15,13 +32,17 @@ const UserSchema = new mongoose.Schema({
   },
 })
 
-UserSchema.pre('save', async function(next) {
-  if(this.isModified('password')){
+UserSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
     this.password = await Password.hash(this.password, 8)
   }
-  next();
-});
+  next()
+})
 
-const User = mongoose.model('User', UserSchema)
+UserSchema.method('getJwt', async function () {
+  return jwt.sign({ id: this.id, email: this.email }, 'secret')
+})
+
+const User = model<IUser, UserModel>('User', UserSchema)
 
 export default User
