@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import colors from 'colors'
-const DB_URL = 'mongodb://127.0.0.1:27017/auth'
-// const DB_URL = 'mongodb://auth-mongo-srv:27017'
-
+const DB_URL = process.env.NODE_ENV==='development' ? 'mongodb://127.0.0.1:27017/auth' : 'mongodb://auth-mongo-srv:27017'
 
 async function connectDB(){
   console.log('db connection')

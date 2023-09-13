@@ -4,7 +4,7 @@ class BasicErorr extends AbstractError {
   statusCode
   msg
   constructor(msg = 'something went wrong', statusCode = 500) {
-    super('new error occurred')
+    super(`new error occurred: ${msg}`)
     this.statusCode = statusCode
     this.msg = msg
   }

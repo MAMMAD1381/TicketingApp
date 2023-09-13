@@ -2,6 +2,7 @@ import { Model, Schema, model } from 'mongoose'
 import mongoose from 'mongoose'
 import Password from '../utilities/password'
 import jwt from 'jsonwebtoken'
+import { transform } from 'typescript'
 
 interface IUser {
   email: string
@@ -30,7 +31,14 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     required: [true, 'pls add a password'],
     select: false,
   },
-})
+}, {toJSON: {
+  transform(doc, ret){
+    ret.id = ret._id
+    delete ret._id
+    delete ret.__v
+    delete ret.password
+  }
+}})
 
 UserSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
@@ -40,7 +48,7 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.method('getJwt', async function () {
-  return jwt.sign({ id: this.id, email: this.email }, 'secret')
+  return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET!)
 })
 
 const User = model<IUser, UserModel>('User', UserSchema)

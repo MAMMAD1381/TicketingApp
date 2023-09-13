@@ -23,12 +23,11 @@ export async function signUp(req: Request, res: Response, next: NextFunction){
 
   const jwtToken = user.getJwt()
 
-  req.session ={
+  req.session = {
     jwtToken
   } 
 
-  console.log(jwtToken)
-  res.status(201).send({success: true, user, jwtToken})
+  res.status(201).send({success: true, user})
 }
 
 //? sign in
