@@ -2,21 +2,19 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname+'/configs/config.env' });
 import express  from "express"
 import { json } from "body-parser"
+import color from 'colors'
 import router from './router'
 import errorHandler from './middlewares/erorrHandler'
 import RouteNotFoundError from './errors/RouteNotFoundError'
 import connectDB from "./utilities/connectDB"
-import cookieSession from "cookie-session"
+import cookieParser from "cookie-parser";
 
 const port = 4000
 
 const app = express()
 app.use(json())
 app.set('trust proxy', true)
-app.use(cookieSession({
-  signed: false,
-  secure: true
-}))
+app.use(cookieParser())
 
 app.use('/api/users/auth', router)
 
