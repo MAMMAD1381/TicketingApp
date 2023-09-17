@@ -1,23 +1,27 @@
-import {MongoMemoryServer} from 'mongodb-memory-server'
-import mongoose from 'mongoose'
-import app from '../app'
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import  app  from '../app';
 
-let mongo: any
+let mongo: any;
+let db: any
+beforeAll(async () => {
+  process.env.JWT_KEY = 'asdfasdf';
 
-async function beforeAll(){
   mongo = new MongoMemoryServer()
-  const dbURI = await mongo.geturi()
-  const db = await mongoose.connect(dbURI)
-}
+  await mongo.start()
+  const mongoUri = mongo.getUri();
 
-async function beforeEach(){
-  const collections = await mongoose.connection.db.collections()
-  for(let collection of collections){
-    await collection.deleteMany({})
+  db = await mongoose.connect(mongoUri);
+});
+
+beforeEach(async () => {
+  const collections = await mongoose.connection.db.collections();
+
+  for (let collection of collections) {
+    await collection.deleteMany({});
   }
-}
+});
 
-async function afterAll(){
-  mongo.stop()
-  mongoose.connection.close()
-}
+afterAll(async () => {
+  await mongoose.connection.close();
+});

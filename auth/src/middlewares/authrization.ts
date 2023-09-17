@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction } from 'express'
 import NotAuthorizedError from '../errors/NotAuthorizedError'
 import AuthorizationProcessError from '../errors/AuthorizationProcessError'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
-import RequestCustom from '../customs/RequestCustom'
+import {RequestCustom, ResponseCustom} from '../customs/CustomTypes'
 
-async function authorization(req: RequestCustom, res: Response, next: NextFunction) {
+async function authorization(req: RequestCustom, res: ResponseCustom, next: NextFunction) {
 
   let bearerKey = req.headers.authorization
   let jwtToken = req.cookies.JWT_TOKEN
@@ -28,7 +28,7 @@ async function authorization(req: RequestCustom, res: Response, next: NextFuncti
       //? checking for provided email
       if(user.email !== payload.email) return next(new NotAuthorizedError(`email doesn't match pls login`))
 
-      req.user = user
+      res.locals.user = user
       //? user is authorized and assigned
       return next()
     
@@ -55,7 +55,7 @@ async function authorization(req: RequestCustom, res: Response, next: NextFuncti
       //? checking for provided email
       if(user.email !== payload.email) return next(new NotAuthorizedError(`email doesn't match pls login`))
 
-      req.user = user
+      res.locals.user = user
       //? user is authorized and assigned
       return next()
 

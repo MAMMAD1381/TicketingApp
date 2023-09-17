@@ -1,14 +1,14 @@
 import { validationResult } from 'express-validator'
 import BasicError from '../errors/BasicError'
 import RequestValidationError from '../errors/RequestValidationError'
-import { Response, NextFunction } from 'express'
+import { NextFunction } from 'express'
 import User from '../models/User'
 import Password from '../utilities/password'
-import RequestCustom from '../customs/RequestCustom'
+import {RequestCustom, ResponseCustom} from '../customs/CustomTypes'
 
 
 //? sign in
-async function signIn(req: RequestCustom, res: Response, next: NextFunction) {
+async function signIn(req: RequestCustom, res: ResponseCustom, next: NextFunction) {
   const { email, password } = req.body
 
   //? validating body parameters
@@ -23,7 +23,8 @@ async function signIn(req: RequestCustom, res: Response, next: NextFunction) {
   const isPassCorrect = await Password.compare(password, user.password)
   if (!isPassCorrect) return next(new BasicError(`wrong credentials`, 404))
 
-  req.user = user
+  res.locals.user = user
+  res.locals.statusCode = 200
 
   //? send jwt token
   next()
