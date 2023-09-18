@@ -9,7 +9,8 @@ import getMe from '../controller/getMe'
 //? middlewares
 import { authValidation } from '../utilities/authValidator'
 import sendJWT from '../middlewares/sendJWT'
-import authorization from '../middlewares/authrization'
+import bearerTokenAuthorization from '../middlewares/authorization/bearerTokenAuthorization'
+import jwtCookieAuthorization from '../middlewares/authorization/jwtCookieAuthorization'
 
 const router = Router()
 
@@ -19,6 +20,6 @@ router.route('/signin').post(authValidation, signIn, sendJWT)
 
 router.route('/signout').post(signOut)
 
-router.route('/me').get(authorization, getMe)
+router.route('/me').get(bearerTokenAuthorization, jwtCookieAuthorization, getMe)
 
 export default router
