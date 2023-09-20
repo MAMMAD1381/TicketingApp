@@ -48,4 +48,12 @@ build:
         manual:
           - src: "src/**/*.js"
             dest: .
+    - image: mammad1381/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
     
