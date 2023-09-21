@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: client
+        imagePullPolicy: Never
         image: mammad1381/client
 ---
 apiVersion: v1

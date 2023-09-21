@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import axios from 'axios'
+import useRequest from '../../hooks/useRequest'
 
 export default () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { doRequest, errors } = useRequest({url: '/api/users/auth/signup', method: 'post', body:{
+    email, password
+  }})
 
-  async function submitForm(event){
+  async function submitForm(event) {
     event.preventDefault()
-    const response = await axios.post('api/users/auth/signup', {email, password})
-
-    console.log(response.data)
+    const res = doRequest()
+    setEmail('')
+    setPassword('')
   }
 
   return (
@@ -23,7 +27,7 @@ export default () => {
           aria-describedby="emailHelp"
           placeholder="Enter email"
           value={email}
-          onChange={e=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="form-group">
@@ -34,12 +38,13 @@ export default () => {
           id="exampleInputPassword1"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <button type="submit" className="btn btn-primary">
         Submit
       </button>
+      {errors}
     </form>
   )
 }
