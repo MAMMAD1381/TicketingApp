@@ -12,7 +12,7 @@ app.use(json())
 app.set('trust proxy', true)
 app.use(cookieParser())
 
-app.use('/api/users/auth', router)
+app.use('/api/auth', router)
 
 app.route('/').get((req, res) => {
   res.status(200).send('<h1>welcome to auth service</h1>')
